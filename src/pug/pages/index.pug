@@ -8,9 +8,12 @@ html(lang='ru-RU')
         link(rel="shortcut icon" href="build/static/img/favicon/favicon.ico" type="image/x-icon")
     body
         .wrapper
+            div(id='credit_svg')
             form(action='' name='myform' method='get' class='container')
                 include ../modules/front_card
                 include ../modules/back_card
             include ../modules/modal_window
         script(src='build/static/js/libs.min.js')
+        script(src='build/static/js/jquery.lazylinepainter-1.7.0.min.js')
         script(src='build/static/js/index.js')
+
