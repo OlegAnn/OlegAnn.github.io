@@ -1,14 +1,14 @@
 doctype html
 html(lang='ru-RU')
     head
-        title Credit card
+        title 3D Credit Card
         link(rel='stylesheet' type='text/css' href='build/static/css/index.css')
         link(rel='stylesheet' href='build/static/font/font-awesome/css/fontawesome-all.min.css')
         link(href="https://fonts.googleapis.com/css?family=Archivo+Black" rel="stylesheet")
         link(rel="shortcut icon" href="build/static/img/favicon/favicon.ico" type="image/x-icon")
     body
         .wrapper
-            div(id='credit_svg')
+            div(id='credit_svg' class='credit_svg')
             form(action='' name='myform' method='get' class='container')
                 include ../modules/front_card
                 include ../modules/back_card

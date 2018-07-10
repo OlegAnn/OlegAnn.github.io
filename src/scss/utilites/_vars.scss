@@ -1,22 +1,15 @@
 // Vars ==== //
 
 // Fonts && ...
-$base-font-size: 16px !global;
-$base-line-height: 22px !global;
-$rhythm-unit: "rem" !global;
-$rem-with-px-fallback: true !global;
 
-$Default: Arial,Helvetica,sans-serif !global;
-
-// Colors ======================================= //
-$Base_white: #fff !global;
-$Base_green: #366934 !global;
-$Base_green_1: #d9eac0 !global;
-$Base_yellow: #efa423 !global;
-$Base_red: #bc3437 !global;
-$Base_text_color: #555 !global;
-$Base_text_color_1: #838383 !global;
-$Base_text_color_2: #366934 !global;
-$Base_border_color: #979797 !global;
-$Base_form_background: #d9eac0 !global;
-$Base_form_background_1: #FBFBFB !global;
+// Colors base======================================= //
+$base-black: #625F5B;
+$base-red: #720000;
+// lighten ======== //
+$yellow-light: #FFF9C4;
+$grey-light: #DAD6B5;
+$grey-light1: #616161;
+$dark-light: #424242;
+$blue-light: #2196F3;
+// darken ========= //
+$blue-dark: #303F9F;

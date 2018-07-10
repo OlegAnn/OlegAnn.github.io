@@ -5,7 +5,7 @@ module.exports = function () {
     });
     $.gulp.task('img:build', function() {
         return $.gulp.src('src/img/**/*')
-            .pipe($.gp.tinypng('uGJSFvi63AeEwPzxaNqWrLr3pzo8G0Of'))
+            .pipe($.gp.tinypng('E6OlospnYtXUo7C3MPsaaFeXeukjHcOM'))
             .pipe($.gulp.dest('build/static/img/'));
     });
 };

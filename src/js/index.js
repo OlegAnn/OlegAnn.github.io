@@ -7,6 +7,125 @@ window.mainApp = {
     numberInput: document.querySelector('.number_card input')
 }
 
+class CheckNumberCard {
+    constructor(selector) {
+        this.selector = selector;
+    }
+    checkPaymentSystem() {
+        // if first value == 4, add logo visa
+        if(mainApp.numberInput.value.substring(0,1)/1 == 4) {
+            document.querySelector('.visa').classList.add('visa_open');
+        } else {
+            document.querySelector('.visa').classList.remove('visa_open');
+        }
+        // if first value == 5, add logo mastercard
+        if(mainApp.numberInput.value.substring(0,1)/1 == 5) {
+            document.querySelector('.master_card').classList.add('master_open');
+        } else {
+            document.querySelector('.master_card').classList.remove('master_open');
+        }
+    }
+    checkFrontInputValid() {
+        // if all front input valid, then you can turn the card back side
+        if (!$('.front_input:invalid').length) {
+            document.querySelector('.submit').classList.add('opacity');
+            // dynamic last 4 number number card
+            mainApp.lastNumbers = document.querySelector('.number_card input').value.substring(18, 22);
+            // if number card valid, then give the key for turn the card back side
+            if (mainApp.togglePattern) {
+                mainApp.patternFrontValid = true;
+            }
+            // assign last 4 number for back_card element
+            document.querySelector('.last_number').textContent = mainApp.lastNumbers;
+        } else {
+            // if one front input invalid, then you can't turn the card back side
+            $('.submit').removeClass('opacity');
+            mainApp.patternFrontValid = false;
+        }
+    }
+    checkNumberCardValid() {
+        // calculation for the validity of the card according to the formula:
+        // sum even numbers (let sumEven) + doubled odd numbers(let doubledOddNumbers)
+        // if, after doubling, a two-digit number is obtained,
+        // then it is considered as the sum of the digits (ie 14 is considered as 1 + 4)
+        // if the result is divisible by 10 without residue, then the card number is correct
+        if (!$('.number_card:invalid').length) {
+            // assignment number_card value
+            let val = mainApp.numberInput.value;
+            $('.alert_num_card').text(val);
+            // array of card numbers
+            window.nubmer = [
+                {value: val.substring(0,1) / 1},
+                {value: val.substring(1,2) / 1},
+                {value: val.substring(2,3) / 1},
+                {value: val.substring(3,4) / 1},
+                {value: val.substring(6,7) / 1},
+                {value: val.substring(7,8) / 1},
+                {value: val.substring(8,9) / 1},
+                {value: val.substring(9,10) / 1},
+                {value: val.substring(12,13) / 1},
+                {value: val.substring(13,14) / 1},
+                {value: val.substring(14,15) / 1},
+                {value: val.substring(15,16) / 1},
+                {value: val.substring(18,19) / 1},
+                {value: val.substring(19,20) / 1},
+                {value: val.substring(20,21) / 1},
+                {value: val.substring(21,22) / 1}
+            ];
+            // sum even numbers
+            let sumEven =  window.nubmer.reduce(function (sum,current,index) {
+                return (index%2>0) ? sum + current.value : sum;
+            }, 0);
+            let sumDoubledOddNumbers = function () {
+                // create new array of oddNumber
+                let multiplyOdd = window.nubmer.filter(function (item, i, arr) {
+                    if (i%2==0) {
+                        return item
+                    }
+                });
+                // array of multiplied numbers
+                window.doubledOddNumbers = [];
+                multiplyOdd.forEach(function (item,i) {
+                    let n = item.value * 2;
+                    if (n>9){
+                        n = n + ''
+                        // test for 10 (1 + 0 = 1)
+                        if (n.substring(1,2) == 0){
+                            n = n.substring(0,1) / 1;
+                        } else {
+                            // example conversion 14 to 5 (1 + 4)
+                            n = (n.substring(0,1)/1) + (n.substring(1,2)/1)
+                        }
+                    }
+                    // pushed in array of multiplied odd numbers
+                    window.doubledOddNumbers.push(n)
+                })
+                let sumNumbers = window.doubledOddNumbers.reduce(function (sum,current,index) {
+                    return sum + current;
+                }, 0)
+                //return sumDoubledOddNumbers
+                return sumNumbers;
+            }
+            // if the sum odd numbers and even, is divisible by 10 without residue,
+            // then the card number is correct
+            if((sumEven + sumDoubledOddNumbers())%10==0){
+                mainApp.togglePattern = true;
+            } else {
+                document.querySelector('.modal_window').classList.add('show_modal');
+                mainApp.togglePattern = true;
+                mainApp.numberInput.value = '5164  3513  4432  2225';
+            }
+        };
+    };
+};
+
+let checkNumberCard = new CheckNumberCard();
+$('.front_input').on('keyup', function() {
+    checkNumberCard.checkPaymentSystem();
+    checkNumberCard.checkFrontInputValid();
+    checkNumberCard.checkNumberCardValid();
+});
+
 class SubmitClick {
     constructor(selector) {
         this.selector = selector;
@@ -18,6 +137,9 @@ class SubmitClick {
             if(mainApp.patternFrontValid) {
                 document.querySelector('.front').classList.toggle("front_click");
                 document.querySelector('.back').classList.toggle("back_click");
+                // init svg animaton
+                $('#credit_svg').lazylinepainter('paint');
+                document.querySelector('#credit_svg').classList.toggle('active');
                 // toggle back/front val from submit
                 mainApp.counter++;
                 // odd value means back-side, even front-side
@@ -48,13 +170,11 @@ class Validation {
             let cardCode = this.value.replace(/[^\d]/g, '').substring(0,16);
             cardCode = cardCode != '' ? cardCode.match(/.{1,4}/g).join('  ') : '';
             // assign a formatted value
-            $('#credit_svg').lazylinepainter('pause');
             this.value = cardCode;
         }
         // check for 4 digits and add '/' after two digits
         function checkThru() {
             let cardCode = this.value.replace(/[^\d]/g, '').substring(0,4);
-            $('#credit_svg').lazylinepainter('resume');
             cardCode = cardCode != '' ? cardCode.match(/.{1,2}/g).join('/') : '';
             // toggle fa-caret-right icon after pressing in input
             document.querySelector('.fa-caret-right').classList.toggle('action');
@@ -96,115 +216,7 @@ class Validation {
 let validation = new Validation(myform);
 validation.init();
 
-class CheckNumberCard {
-    constructor(selector) {
-        this.selector = selector;
-    }
-    init() {
-        if(mainApp.numberInput.value.substring(0,1)/1 == 4) {
-            document.querySelector('.visa').classList.add('visa_open');
-        } else {
-            document.querySelector('.visa').classList.remove('visa_open');
-        }
-        if(mainApp.numberInput.value.substring(0,1)/1 == 5) {
-            document.querySelector('.master_card').classList.add('master_open');
-        } else {
-            document.querySelector('.master_card').classList.remove('master_open');
-        }
-        if (!$('.front_input:invalid').length) {
-            document.querySelector('.submit').classList.add('opacity');
-            mainApp.lastNumbers = document.querySelector('.number_card input').value.substring(18,22);
-            if(mainApp.togglePattern) {
-                mainApp.patternFrontValid = true;
-            }
-
-            console.log( mainApp.patternFrontValid, 'valid');
-            console.log( mainApp.lastNumbers, 'lastnumber');
-            document.querySelector('.last_number').textContent = mainApp.lastNumbers;
-            document.querySelector('.red').classList.remove('ered');
-            document.querySelector('.yellow').classList.remove('eyellow');
-        } else {
-            $('.submit').removeClass('opacity');
-            console.log( mainApp.patternFrontValid, 'novalud');
-            mainApp.patternFrontValid = false;
-        }
-        if (!$('.number_card:invalid').length) {
-            let val = mainApp.numberInput.value;
-            $('.alert_num_card').text(val);
-            window.nubmer = [
-                {value: val.substring(0,1) / 1},
-                {value: val.substring(1,2) / 1},
-                {value: val.substring(2,3) / 1},
-                {value: val.substring(3,4) / 1},
-                {value: val.substring(6,7) / 1},
-                {value: val.substring(7,8) / 1},
-                {value: val.substring(8,9) / 1},
-                {value: val.substring(9,10) / 1},
-                {value: val.substring(12,13) / 1},
-                {value: val.substring(13,14) / 1},
-                {value: val.substring(14,15) / 1},
-                {value: val.substring(15,16) / 1},
-                {value: val.substring(18,19) / 1},
-                {value: val.substring(19,20) / 1},
-                {value: val.substring(20,21) / 1},
-                {value: val.substring(21,22) / 1}
-            ];
-
-            let sumEven =  window.nubmer.reduce(function (sum,current,index) {
-                return (index%2>0) ? sum + current.value : sum;
-            }, 0);
-            let m = function () {
-                let multiplyOdd = window.nubmer.filter(function (item, i, arr) {
-                    if (i%2==0) {
-                        return item
-                    }
-                });
-                window.a = [];
-                let mu = multiplyOdd.forEach(function (item,i) {
-                    let n = item.value * 2;
-                    if (n>9){
-                        n = n + ''
-
-                        // test for 10
-                        if (n.substring(1,2) == 0){
-                            n = n.substring(0,1) / 1;
-                        } else {
-                            n = (n.substring(0,1)/1) + (n.substring(1,2)/1)
-                        }
-                        // example conversion 14 to 5 (1 + 4)
-                        // let ones = n.substring(0,1) / 1;
-                        // let twos = n.substring(1,2) / 1;
-                        // n = ones + twos;
-                    }
-                    window.a.push(n)
-                })
-                let b = window.a.reduce(function (sum,current,index) {
-                    return sum + current;
-                }, 0)
-                return b;
-            }
-
-            if((sumEven + m())%10==0){
-                mainApp.togglePattern = true;
-            } else {
-                document.querySelector('.modal_window').classList.add('show_modal');
-                mainApp.togglePattern = true;
-                mainApp.numberInput.value = '5164  3513  4432  2225';
-                console.log(val , 'number');
-            }
-
-            console.log(sumEven)
-            console.log(m())
-            console.log(val);
-        }
-    }
-}
-
-let checkNumberCard = new CheckNumberCard();
-$('.front_input').on('keyup', function() {
-    checkNumberCard.init();
-})
-
+// toggle val input ready to buy/touch to front
 $('.back_input').on('keyup', function() {
     if (!$('.back_input:invalid').length) {
         $('.submit').val('READY TO BUY');
@@ -213,17 +225,18 @@ $('.back_input').on('keyup', function() {
  			$('.submit').val('TOUCH TO FRONT');
     }
 });
-
+// 3D rotate chip
 $('.chips_svg').on('click', function () {
     $(this).children(':first').toggleClass('front_svg_active');
     $(this).children(':last').toggleClass('back_svg_active');
 });
-
+// close modal window
 $('.alert_button').on('click', function () {
     $('.modal_window').removeClass('show_modal');
 })
 
-var pathObj = {
+// config LazyLinePainter
+let pathObj = {
     "credit_svg": {
         "strokepath": [
             {
@@ -304,19 +317,17 @@ var pathObj = {
             }
         ],
         "dimensions": {
-            "width": 511,
-            "height": 511
+            "width": 515,
+            "height": 515
         }
     }
 };
-
-
 $(document).ready(function(){
     $('#credit_svg').lazylinepainter(
         {
             "svgData": pathObj,
-            "strokeWidth": 5,
-            "strokeColor": "#fff",
+            "strokeWidth": 1,
+            "strokeColor": "#625F5B",
             'ease': 'easeInOutExpo'
-        }).lazylinepainter('paint');
+        })
 });
