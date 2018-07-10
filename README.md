@@ -7,4 +7,4 @@
 
 npm install
 
-![Alt text](http://full/path/to/readmyImg.png "Optional title")
+![Alt text](https://github.com/OlegAnn/OlegAnn.github.io/blob/master/readmyImg.png "Optional title")
