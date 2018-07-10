@@ -7,3 +7,4 @@
 
 npm install
 
+![Alt text](http://full/path/to/readmyImg.png "Optional title")
