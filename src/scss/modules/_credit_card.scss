@@ -97,13 +97,42 @@ body {
 
 
 .front{
-  background: linear-gradient(90deg, $blue-dark, $blue-light);
+  background: linear-gradient(90deg, $credit-dark, $credit-light);
   overflow: hidden;
   .front_container{
     display: flex;
     flex-direction: column;
     .number_card, .valid_thru, .cardholder{
       z-index: 20;
+      position: relative;
+      &:before{
+        font-family: 'Archivo Black', sans-serif;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        background: $yellow-light;
+        font-size: 0.67rem;
+        border-radius: 4px;
+        opacity: .7;
+        padding: 2px 20px;
+        color: $base-red;
+        text-align: center;
+      }
+    }
+    .help_card_code{
+      &:before{
+        content: 'please enter your card number in full';
+      }
+    }
+    .help_thru{
+      &:before{
+        content: 'enter the month from 01 to 12, year from 01 to 99';
+      }
+    }
+    .help_holder{
+      &:before{
+        content: 'Enter the name in English in the format Name Surname';
+      }
     }
     .Name_Card{
       color: white;
@@ -246,10 +275,11 @@ body {
 }
 
 .back{
-  background: linear-gradient(-90deg, $blue-dark, $blue-light);
+  background: linear-gradient(-90deg, $credit-dark, $credit-light);
   transform: rotateY(180deg);
   position: relative;
   .back_container{
+    padding-top: 10.5rem;
     .autorized{
       display: flex;
       position: absolute;
@@ -268,9 +298,9 @@ body {
         content: '';
         position: absolute;
         bottom: 26px;
-        width: 88.5%;
+        width: 96%;
         height: 45px;
-        background: #fff9c4;
+        background: #fff;
       }
       .back_input{
         padding: 0 0 .2rem .5rem;
@@ -279,6 +309,8 @@ body {
         outline: 0;
         border: 0;
         width: 8%;
+        z-index: 3;
+        background: transparent;
         align-self: flex-end;
       }
       .last_number{
@@ -296,14 +328,12 @@ body {
       }
     }
     .lorem{
-      position: absolute;
-      bottom: 57px;
-      padding: 10px;
+      padding: 10px 10px 0 10px;
       color: #bdbdbc;
       text-indent: 20px;
       font-size: .88rem;
-      &:nth-child(2) {
-        bottom: 8px;
+      @media (max-width: 995px) {
+       font-size: .8rem;
       }
     }
   }

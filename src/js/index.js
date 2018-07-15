@@ -171,6 +171,15 @@ class Validation {
             cardCode = cardCode != '' ? cardCode.match(/.{1,4}/g).join('  ') : '';
             // assign a formatted value
             this.value = cardCode;
+            // input prompt
+            if(cardCode.length > 0) {
+                this.parentElement.classList.add('help_card_code');
+                if(this.checkValidity()) {
+                    this.parentElement.classList.remove('help_card_code')
+                }
+            } else {
+                this.parentElement.classList.remove('help_card_code')
+            }
         }
         // check for 4 digits and add '/' after two digits
         function checkThru() {
@@ -196,12 +205,30 @@ class Validation {
             }
             // assign a formatted value
             this.value = cardCode;
+            // input prompt
+            if(cardCode.length > 0) {
+                this.parentElement.classList.add('help_thru');
+                if(this.checkValidity()) {
+                    this.parentElement.classList.remove('help_thru')
+                }
+            } else {
+                this.parentElement.classList.remove('help_thru')
+            }
         }
         // check for 13 letter
         function checkCh() {
             let cardCode = this.value.replace(/[\d]/g, '').substring(0,13);
             // assign a formatted value
             this.value = cardCode;
+            // input prompt
+            if(cardCode.length > 0) {
+                this.parentElement.classList.add('help_holder');
+                if(this.checkValidity()) {
+                    this.parentElement.classList.remove('help_holder')
+                }
+            } else {
+                this.parentElement.classList.remove('help_holder')
+            }
         }
         // check for 3 digits
         function checkCb() {
@@ -209,7 +236,6 @@ class Validation {
             // assign a formatted value
             this.value = cardCode;
         }
-
     }
 }
 // add name form for arguments
