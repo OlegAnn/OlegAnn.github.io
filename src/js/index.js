@@ -160,11 +160,10 @@ class Validation {
         this.selector = selector;
     }
     init() {
-        let elems = this.selector.myinput;
-        elems[0].addEventListener('input', checkCardCode, false);
-        elems[1].addEventListener('input', checkThru, false);
-        elems[2].addEventListener('input', checkCh, false);
-        elems[3].addEventListener('input', checkCb, false);
+      this.selector.numberCard.addEventListener('input', checkCardCode, false);
+      this.selector.mounthAndYear.addEventListener('input', checkThru, false);
+      this.selector.nameCardHolder.addEventListener('input', checkCh, false);
+      this.selector.NumCVV.addEventListener('input', checkCb, false);
         // check for 16 digits, and add spaces between 4 digits
         function checkCardCode() {
             let cardCode = this.value.replace(/[^\d]/g, '').substring(0,16);

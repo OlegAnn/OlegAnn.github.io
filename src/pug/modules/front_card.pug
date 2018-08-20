@@ -36,13 +36,13 @@
                 polyline(points="0,15 15,15 30,30 30,40" fill="none"  stroke="black" stroke-width='2')
                 polyline(points="30,30 40,30" fill="none"  stroke="black" stroke-width='2')
         .number_card
-            input(type="text" name="myinput" pattern="\\d{4}\\s+\\d{4}\\s+\\d{4}\\s+\\d{4}" class='front_input number_card' placeholder='XXXX   XXXX    XXXX    XXXX' required)
+            input(type="text" name="numberCard" pattern="\\d{4}\\s+\\d{4}\\s+\\d{4}\\s+\\d{4}" class='front_input number_card' placeholder='XXXX   XXXX    XXXX    XXXX' required)
         .valid_thru
-            input(id='thru' type="text" name="myinput" pattern=".{5,}" placeholder="00/00" class='front_input thru' required)
+            input(id='thru' type="text" name="mounthAndYear" pattern=".{5,}" placeholder="00/00" class='front_input thru' required)
             label(for='thru' class='front_label') VALID THRU
             <i class="fas fa-caret-right"></i>
         .cardholder
-            input(type="text" name="myinput" maxlength='13' pattern='[A-Za-z]+\\s[A-Za-z]+' placeholder='CARDHOLDER NAME' class='front_input' required)
+            input(type="text" name="nameCardHolder" maxlength='13' pattern='[A-Za-z]+\\s[A-Za-z]+' placeholder='CARDHOLDER NAME' class='front_input' required)
         .master_card
             svg
                 circle(r="40" cx="100" cy="50%" opacity='.7' fill='#FFA000' class='yellow')
